@@ -152,9 +152,12 @@ class Manager(base.HookableMixin):
         if cache:
             cache.write("%s\n" % val)
 
-    def _get(self, url, response_key):
+    def _get(self, url, response_key=None):
         _resp, body = self.api.client.get(url)
-        return self.resource_class(self, body[response_key], loaded=True)
+        if response_key:
+            return self.resource_class(self, body[response_key], loaded=True)
+        else:
+            return self.resource_class(self, body, loaded=True)
 
     def _create(self, url, body, response_key, return_raw=False, **kwargs):
         self.run_hooks('modify_body_for_create', body, **kwargs)

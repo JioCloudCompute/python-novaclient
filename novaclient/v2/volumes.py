@@ -112,6 +112,26 @@ class VolumeManager(base.ManagerWithFind):
         with self.alternate_service_type('volume'):
             self._delete("/volumes/%s" % base.getid(volume))
 
+    def show_delete_on_termination_flag(self, volume_id):
+        """
+        Get the delete on termination flag on the volume id
+        to the given value.
+
+        :param volume_id: The ID of the volume to update
+        """
+        return self._get("/volumes/%s" % volume_id)
+
+    def update_delete_on_termination_flag(self, volume_id, flag):
+        """
+        Set the delete on termination flag on the volume id
+        to the given value.
+
+        :param volume_id: The ID of the volume to update
+        :param flag: True/False
+        """
+        body = {"delete_on_termination": flag}
+        return self._update("/volumes/%s" % volume_id, body)
+
     def create_server_volume(self, server_id, volume_id, device):
         """
         Attach a volume identified by the volume ID to the given server ID
